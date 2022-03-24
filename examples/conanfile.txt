@@ -1,0 +1,6 @@
+[requires]
+commander/0.1.0
+
+[generators]
+cmake_find_package
+CMakeToolchain
