@@ -18,18 +18,9 @@ Macros
 
 .. _core_types:
 
-Convenience classes for arbitrary Python types
-==============================================
-
-Common member functions
------------------------
+Core Types
+==========
 
 .. doxygenstruct:: commander::Module
   :members:
-
-Without reference counting
---------------------------
-
-.. .. doxygenclass:: handle
-..     :members:
 

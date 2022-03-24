@@ -51,3 +51,22 @@ conan create .
 ```
 
 It will create `commander` package in your local conan cache.
+
+## Build documentation
+
+To build the documentation, you need to install `doxygen`, `breathe`, `Sphinx`, `sphinx-rtd-theme`, `sphinx-rtd-dark-mode`.
+
+To install doxygen, refer to your OS package manager. For the rest, run:
+
+```bash
+pip install breathe Sphinx sphinx-rtd-theme sphinx-rtd-dark-mode
+```
+
+To build the documentation, run:
+
+```bash
+cd docs
+make html
+```
+
+It will produce the documentation in `build/docs/sphinx/html`.
