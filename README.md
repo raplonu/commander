@@ -2,6 +2,40 @@
 
 Commander is a command line tool interface library.
 
+## Simple usage
+
+Let's start by creating command bindings for an extremely simple function, which
+adds two numbers and returns their result:
+
+```c++
+int add(int i, int j) {
+    return i + j;
+}
+```
+
+For simplicity we'll put both this function and the binding code into
+a file named `example.cpp` with the following contents:
+
+```cpp
+#include <commander/commander.h>
+
+int add(int i, int j) {
+    return i + j;
+}
+
+COMMANDER_REGISTER(m) {
+    m.def("add", &add, "A function that adds two numbers");
+}
+```
+
+Now, all you need is to compile the source file and run the executable with for instance the
+`commander::Server`:
+
+```bash
+./example --command add [2,3]
+5
+```
+
 ## Installation
 
 Commander need some dependencies to be installed. You can easily install them by using conan package manager.
