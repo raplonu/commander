@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(commander VERSION 0.1.0 LANGUAGES CXX CUDA)
+project(commander VERSION 0.1.0 LANGUAGES CXX)
 
 add_library(commander
     src/registry.cpp
@@ -13,7 +13,7 @@ add_library(commander
 
 target_include_directories(commander PUBLIC include)
 
-target_compile_features(commander PUBLIC cxx_std_14)
+target_compile_features(commander PUBLIC cxx_std_17)
 
 find_package(fmt REQUIRED)
 find_package(nlohmann_json REQUIRED)
