@@ -24,7 +24,7 @@ target_link_libraries(commander PUBLIC
     fmt::fmt
     nlohmann_json::nlohmann_json
     Boost::boost
-    cppzmq::cppzmq
+    cppzmq
 )
 
 install(TARGETS commander

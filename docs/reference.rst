@@ -23,4 +23,3 @@ Core Types
 
 .. doxygenstruct:: commander::Module
   :members:
-

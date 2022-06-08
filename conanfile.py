@@ -28,11 +28,7 @@ class CommanderConan(ConanFile):
     }
 
     settings = 'os', 'compiler', 'build_type', 'arch'
-    generators = 'cmake_find_package'
-
-    def generate(self):
-        cmake = CMakeToolchain(self)
-        cmake.generate()
+    generators = 'CMakeToolchain', 'CMakeDeps'
 
     def build(self):
         # Fix to enable parallel compilation.
