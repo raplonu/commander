@@ -31,6 +31,15 @@ COMMANDER_REGISTER(m) {
 Now, all you need is to compile the source file and run the executable with for instance the
 `commander::Server`:
 
+```cpp
+
+int main(int argc, char* argv[]) {
+    commander::Server(argc, argv).run();
+}
+```
+
+and use it as follow:
+
 ```bash
 ./example --command add [2,3]
 5
@@ -38,45 +47,43 @@ Now, all you need is to compile the source file and run the executable with for 
 
 ## Installation
 
-Commander need some dependencies to be installed. You can easily install them by using conan package manager.
+### Quick installation
 
-- [nlohmann_json 3.10](https://github.com/nlohmann/json/releases/tag/v3.10.5)
-- [cppzmq 4.8](https://github.com/zeromq/cppzmq/releases/tag/v4.8.1)
-- [boost 1.78](https://www.boost.org/users/history/version_1_78_0.html)
-- [fmt 8.1](https://github.com/fmtlib/fmt/releases/tag/8.1.1)
+Commander is available as a conan package.
 
-### Using Conan package manager.
-
-You can install conan using `pip`.
+First, you will need to install conan using `pip`.
 
 ```bash
 python -m pip install conan --user
 ```
 
-Then you need to configure the conan profile:
-
-This command will create a profile named `default` that list information about OS and compiler among other things.
+Then you need to create the default profile and add the cosmic repository that own commander. Simply run the following script:
 
 ```bash
 tools/configure_conan.sh
 ```
 
-The script will adds `cosmic` repository to conan. which is not available in conancenter.
+Then create a `conanfile.py` or `conanfile.txt` and add `commander/0.1.0` dependency. See [conan documentation](https://docs.conan.io/en/latest/using_packages.html).
 
-It will also configure the conan profile based on compiler and platform.
-
-### Install Commander manually
-
-Run:
+And run the command:
 
 ```bash
+conan install . -if build
+```
+
+This command will download commander, build it into the conan cache if missing and will generate files to let cmake know how to use it.
+
+You can find a consumer example in `examples` directory. You can build it doing:
+
+```bash
+cd examples
 ./configure.sh
 ./build.sh
 ```
 
 `configure.sh` will download and build dependencies if needed into your local conan cache and generate cmake configuration files.
 
-## Package Commander into the local conan cache.
+### Create package from source.
 
 Run:
 
@@ -93,7 +100,7 @@ To build the documentation, you need to install `doxygen`, `breathe`, `Sphinx`, 
 To install doxygen, refer to your OS package manager. For the rest, run:
 
 ```bash
-pip install breathe Sphinx sphinx-rtd-theme sphinx-rtd-dark-mode
+pip install -r requirements.txt
 ```
 
 To build the documentation, run:
