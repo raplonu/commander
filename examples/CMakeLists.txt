@@ -15,6 +15,3 @@ find_package(commander REQUIRED)
 target_link_libraries(example_cli PUBLIC
     commander::commander
 )
-
-
-

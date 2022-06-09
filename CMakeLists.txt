@@ -33,8 +33,3 @@ install(TARGETS commander
 )
 
 install(DIRECTORY include/commander DESTINATION include)
-
-
-
-
-

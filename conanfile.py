@@ -31,19 +31,20 @@ class CommanderConan(ConanFile):
     generators = 'CMakeToolchain', 'CMakeDeps'
 
     def build(self):
-        # Fix to enable parallel compilation.
-        # self.conf["tools.build:processes"] = tools.cpu_count()
-
         cmake = CMake(self)
 
-        cmake.configure()
-        cmake.build()
+        if self.should_configure:
+            cmake.configure()
+        if self.should_build:
+            cmake.build()
+        if self.should_test:
+            cmake.test()
 
     def package(self):
         cmake = CMake(self)
 
-        cmake.configure()
-        cmake.install()
+        if self.should_install:
+            cmake.install()
 
     def package_info(self):
         self.cpp_info.libs   = ['commander']

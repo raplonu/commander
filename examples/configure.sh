@@ -8,5 +8,8 @@ set -e
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
 
+# Get dependencies and prepare build directory.
 conan install .. --build=missing -pr default -pr:b=default $@
-cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_MODULE_PATH=.
+
+# Let conan invoke cmake configure.
+conan build .. -c
