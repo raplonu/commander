@@ -24,8 +24,8 @@ namespace commander::server
         zmq::message_t msg;
         while (true)
         {
-            auto err = sock.recv(msg, zmq::recv_flags::none);
-            if (err)
+            auto recv_res = sock.recv(msg, zmq::recv_flags::none);
+            if (!recv_res)
             {
                 fmt::print("[socket] error receiving message\n");
                 continue;
