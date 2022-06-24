@@ -1,5 +1,5 @@
 from conans import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain
+from conan.tools.cmake import CMake
 
 class CommanderConan(ConanFile):
     name = 'commander'
@@ -37,8 +37,6 @@ class CommanderConan(ConanFile):
             cmake.configure()
         if self.should_build:
             cmake.build()
-        if self.should_test:
-            cmake.test()
 
     def package(self):
         cmake = CMake(self)

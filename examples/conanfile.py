@@ -14,5 +14,3 @@ class Pkg(ConanFile):
             cmake.configure()
         if self.should_build:
             cmake.build()
-        if self.should_test:
-            cmake.test()
