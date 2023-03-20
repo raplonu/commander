@@ -8,7 +8,7 @@ add_library(commander
     src/server/interactive.cpp
     src/server/single_command.cpp
     src/server/socket.cpp
-    # include/commander/commander.h
+    src/client/socket.cpp
 )
 
 target_include_directories(commander PUBLIC include)
