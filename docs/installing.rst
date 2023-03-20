@@ -25,7 +25,7 @@ Then adds the commander dependency to your conanfile.txt file.
 .. code-block:: text
 
     [requires]
-    commander/0.1.0
+    commander/0.2.0
 
 .. seealso::
 
@@ -52,7 +52,7 @@ You can find it by typing the following command in your terminal:
 
 .. code-block:: bash
 
-    conan search commander/0.1.0
+    conan search commander/0.2.0
 
 Finally, you can use the package in your project the same way as if you had used
 the package from the cosmic conan remote.
