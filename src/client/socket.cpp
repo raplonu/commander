@@ -9,13 +9,13 @@ namespace commander::client
         sock.connect(socket);
     }
 
-    void Socket::send(std::string_view command_name, json args)
+    void Socket::send(std::string_view command_name, json::array args)
     {
-        auto message = fmt::format("{} {}", command_name, args.dump());
+        auto message = fmt::format("{} {}", command_name, args);
         sock.send(zmq::message_t(message.c_str(), message.size()), zmq::send_flags::none);
     }
 
-    json Socket::recv()
+    json::value Socket::recv()
     {
         zmq::message_t msg;
         auto recv_res = sock.recv(msg, zmq::recv_flags::none);

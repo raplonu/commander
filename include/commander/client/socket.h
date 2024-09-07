@@ -1,7 +1,7 @@
 #ifndef COMMANDER_CLIENT_SOCKET_H
 #define COMMANDER_CLIENT_SOCKET_H
 
-#include <nlohmann/json.hpp>
+#include <commander/json.hpp>
 #include <zmq.hpp>
 #include <fmt/core.h>
 
@@ -9,7 +9,6 @@
 
 namespace commander::client
 {
-    using nlohmann::json;
 
     struct Socket
     {
@@ -19,13 +18,13 @@ namespace commander::client
 
         template <typename Res, typename... Ts>
         Res send(std::string_view command_name, Ts... ts) {
-            json args = json::array({json(ts)...});
+            json::array args({json::value(ts)...});
 
             send(command_name, args);
 
-            auto result = recv();
+            json::value result = recv();
 
-            return result.get<Res>();
+            return json::value_to<Res>(result);
 
         }
 
@@ -37,9 +36,9 @@ namespace commander::client
 
         }
 
-        void send(std::string_view command_name, json args);
+        void send(std::string_view command_name, json::array args);
 
-        json recv();
+        json::value recv();
 
         zmq::context_t ctx;
         zmq::socket_t sock;

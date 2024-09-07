@@ -211,12 +211,12 @@ namespace commander
             return ModuleObject{*this, name, instance};
         }
 
-        json execute(const std::string& name, const json& args)
+        json::value execute(const std::string& name, const json::array& args)
         {
             try {
                 return functions.at(name)(args);
             } catch (const std::exception& e) {
-                return json{{"error", e.what()}};
+                return json::object{{"error", e.what()}};
             }
         }
     };

@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(commander VERSION 0.2.0 LANGUAGES CXX)
+project(commander VERSION 1.0.0 LANGUAGES CXX)
+
+# Always generate compile_commands.json. Used by clangd and other tools.
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_library(commander
     src/registry.cpp
@@ -11,25 +14,31 @@ add_library(commander
     src/client/socket.cpp
 )
 
-target_include_directories(commander PUBLIC include)
+target_sources(commander
+PUBLIC FILE_SET HEADERS BASE_DIRS include FILES
+    include/commander/client/socket.h
+    include/commander/commander.h
+    include/commander/function_parser.h
+    include/commander/json.hpp
+    include/commander/module.h
+    include/commander/registry.h
+    include/commander/server.h
+    include/commander/server/interactive.h
+    include/commander/server/interface.h
+    include/commander/server/single_command.h
+    include/commander/server/socket.h
+)
 
-target_compile_features(commander PUBLIC cxx_std_17)
+target_compile_features(commander PUBLIC cxx_std_20)
 
-find_package(fmt REQUIRED)
-find_package(nlohmann_json REQUIRED)
-find_package(Boost REQUIRED)
+find_package(emu REQUIRED)
 find_package(cppzmq REQUIRED)
 
 target_link_libraries(commander PUBLIC
-    fmt::fmt
-    nlohmann_json::nlohmann_json
-    Boost::boost
+    emu::emu
     cppzmq
 )
 
 install(TARGETS commander
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
+    FILE_SET HEADERS
 )
-
-install(DIRECTORY include/commander DESTINATION include)

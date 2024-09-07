@@ -3,50 +3,45 @@
 
 #include <boost/callable_traits.hpp>
 
-#include <nlohmann/json.hpp>
+#include <commander/json.hpp>
 
 #include <tuple>
 #include <functional>
 
 namespace commander
 {
-    using nlohmann::json;
-    using json_function = std::function<json(const json& args)>;
+    namespace bj = boost::json;
+
+    using json_function = std::function<bj::value(const bj::array& args)>;
     namespace ct = boost::callable_traits;
 
     /// C++17 version of std::type_identity
     /// Replace by std::type_identity when C++20.
-    template< class T >
-    struct type_identity {
-        using type = T;
-    };
-
-    template< class T >
-    using type_identity_t = typename type_identity<T>::type;
+    using std::type_identity;
 
 namespace detail
 {
 
     template <typename Fn, typename ReturnType, typename... ParamTypes, std::size_t... Is>
     json_function parse_impl(Fn&& fn, type_identity<ReturnType>, type_identity<std::tuple<ParamTypes...>>, std::index_sequence<Is...>) {
-        return [fn = std::forward<Fn>(fn)](const json& args) -> json {
+        return [fn = std::forward<Fn>(fn)](const bj::array& args) -> bj::value {
             if constexpr (std::is_same_v<ReturnType, void>) {
-                std::invoke(fn, args[Is].get<ParamTypes>()...);
+                std::invoke(fn, json::value_to<ParamTypes>(args[Is])...);
                 return nullptr;
             } else {
-                return std::invoke(fn, args[Is].get<ParamTypes>()...);
+                return json::value_from(std::invoke(fn, json::value_to<ParamTypes>(args[Is])...));
             }
         };
     }
 
     template <typename Fn, typename Instance, typename T, typename ReturnType, typename... ParamTypes, std::size_t... Is>
     json_function parse_impl(Fn&& fn, Instance&& instance, type_identity<ReturnType>, type_identity<std::tuple<T, ParamTypes...>>, std::index_sequence<Is...>) {
-        return [fn = std::forward<Fn>(fn), instance = std::forward<Instance>(instance)](const json& args) -> json {
+        return [fn = std::forward<Fn>(fn), instance = std::forward<Instance>(instance)](const bj::array& args) -> bj::value {
             if constexpr (std::is_same_v<ReturnType, void>) {
-                std::invoke(fn, instance(), args[Is].get<ParamTypes>()...);
+                std::invoke(fn, instance(), json::value_to<ParamTypes>(args[Is])...);
                 return nullptr;
             } else {
-                return std::invoke(fn, instance(), args[Is].get<ParamTypes>()...);
+                return std::invoke(fn, instance(), json::value_to<ParamTypes>(args[Is])...);
             }
         };
     }

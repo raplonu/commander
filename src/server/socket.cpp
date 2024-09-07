@@ -37,17 +37,17 @@ namespace commander::server
 
             auto pos = command.find(' ');
             std::string name;
-            json args;
+            json::array args;
 
             if (pos == std::string::npos)
                 name = command;
             else
             {
                 name = command.substr(0, pos);
-                args = json::parse(command.substr(pos + 1));
+                args = json::parse(command.substr(pos + 1)).as_array();
             }
 
-            auto res = module_.execute(name, args).dump();
+            auto res = json::serialize(module_.execute(name, args));
 
             fmt::print("Sending response: {}\n", res);
 

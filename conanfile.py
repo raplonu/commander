@@ -1,21 +1,15 @@
-from conans import ConanFile
-from conan.tools.cmake import CMake
+from conan import ConanFile
+from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 
 class CommanderConan(ConanFile):
     name = 'commander'
-    version = '0.2.0'
+    version = '1.0.0'
     license = "MIT"
 
-    build_policy = 'missing'
-    no_copy_source = True
+    settings = 'os', 'compiler', 'build_type', 'arch'
+
     exports_sources = 'CMakeLists.txt', 'include/*', 'src/*'
 
-    requires = [
-        'nlohmann_json/3.10.5',
-        'cppzmq/4.8.1',
-        'boost/1.78.0',
-        'fmt/8.1.1',
-    ]
 
     options = {
         'shared' : [True, False],
@@ -27,22 +21,24 @@ class CommanderConan(ConanFile):
         'fPIC'   : True
     }
 
-    settings = 'os', 'compiler', 'build_type', 'arch'
+    def requirements(self):
+        self.requires('cppzmq/4.10.0', transitive_headers=True)
+        self.requires('emu/1.0.0', transitive_headers=True)
+
+    def layout(self):
+        cmake_layout(self)
+
     generators = 'CMakeToolchain', 'CMakeDeps'
 
     def build(self):
         cmake = CMake(self)
 
-        if self.should_configure:
-            cmake.configure()
-        if self.should_build:
-            cmake.build()
+        cmake.configure()
+        cmake.build()
 
     def package(self):
         cmake = CMake(self)
-
-        if self.should_install:
-            cmake.install()
+        cmake.install()
 
     def package_info(self):
         self.cpp_info.libs   = ['commander']

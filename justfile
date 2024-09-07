@@ -1,29 +1,33 @@
+default: install
 
-# Default command: configure and build project.
-default: configure build
+# Install emu
+install *args:
+    # unregister just in case or else consumer will continue to use the editable version
+    just unregister
 
-# Install deps and configure project in build folder.
-configure *args:
-	mkdir -p build
-	conan install . -if build --build=missing -pr:h=default -pr:b=default {{args}}
-	conan build -c . -bf build
+    conan create . -b missing {{args}}
 
-# Build project.
-build:
-	cmake --build build
+dev *args:
+    just register
+    conan build . -b missing {{args}}
 
-# Deploy package in conan cache.
-deploy:
-    conan create .
+build build_type="release":
+    cmake --build --preset "conan-{{build_type}}"
 
-# Install docs dependencies.
-configure-docs:
-    pip install -r requirements.txt
+test build_type="release":
+    ctest --preset conan-{{build_type}}
 
-# Build docs.
-docs:
-    make -C docs html
+# Register emu as editable in conan
+@register:
+    conan editable add .
 
-# Clean
-clean:
-	rm -rf build/*
+# Unregister emu as editable in conan
+@unregister:
+    conan editable remove .
+
+# Clean build directory
+@clean:
+    just unregister
+    rm -rf                            \
+        build/*                       \
+        CMakeUserPresets.json
